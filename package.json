@@ -1,16 +1,16 @@
 {
-  "name": "@buccaneerai/PACKAGE_NAME",
+  "name": "@buccaneerai/rxjs-ws",
   "version": "1.0.0",
-  "description": "DESCRIPTION",
+  "description": "🔌 RxJS operators for working with WebSockets",
   "main": "dist/index.js",
-  "repository": "https://github.com/buccaneerai/PACKAGE_NAME.git",
+  "repository": "https://github.com/buccaneerai/rxjs-ws.git",
   "author": "Buccaneer LLC <opensource@buccaneer.ai>",
   "license": "UNLICENSED",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
   "bugs": {
-    "url": "https://github.com/buccaneerai/PACKAGE_NAME/issues"
+    "url": "https://github.com/buccaneerai/rxjs-ws/issues"
   },
   "keywords": [],
   "directories": {
@@ -24,8 +24,10 @@
     "test": "mocha --require @babel/register --require @babel/polyfill \"./{,!(node_modules)/**/}*.test.js\" --exit --require source-map-support"
   },
   "dependencies": {
+    "isomorphic-ws": "^4.0.1",
     "lodash": "^4.17.20",
-    "rxjs": "^6.6.3"
+    "rxjs": "^6.6.3",
+    "ws": "^7.4.5"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.13",
@@ -36,6 +38,7 @@
     "@babel/register": "^7.12.13",
     "chai": "^4.2.0",
     "commander": "^7.0.0",
+    "express": "^4.17.1",
     "mocha": "^8.2.1",
     "rxjs-marbles": "^6.0.1",
     "sinon": "^9.2.4"

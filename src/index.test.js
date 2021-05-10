@@ -7,7 +7,13 @@ import * as api from './index';
 describe('index', () => {
   it('should export public API', () => {
     expect(Object.keys(api)).to.deep.equal([
-      'myPublicFunction1', // FIXME
+      'ws',
+      'produce',
+      'client',
+      'conduit',
+      'connections',
+      'consume',
+      'disconnections'
     ]);
   });
 });
