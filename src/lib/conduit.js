@@ -1,4 +1,5 @@
 import {
+  EMPTY,
   merge,
   of,
   throwError
@@ -20,6 +21,7 @@ import {
 import ws from './ws';
 import send from './send';
 import consume from './consume';
+import eventToError from './eventToError';
 
 const errors = {
   noUrl: () => new Error('conduit operator requires a {url<String>}'),
@@ -86,6 +88,7 @@ const conduit = function conduit({
   _consume = consume,
   _ws = ws,
   _bufferMessages = bufferMessages,
+  _eventToError = eventToError,
 } = {}) {
   if (!url) return () => throwError(errors.noUrl());
   return messageIn$ => {
@@ -94,6 +97,7 @@ const conduit = function conduit({
       takeUntil(stop$),
       shareReplay(1),
     );
+    const error$ = ws$.pipe(_eventToError());
     const producer$ = messageIn$.pipe(
       (bufferOnDisconnect ? _bufferMessages(ws$) : tap()),
       takeUntil(stop$),
@@ -103,7 +107,9 @@ const conduit = function conduit({
     const consumer$ = ws$.pipe(
       _consume(deserializer)
     );
-    return merge(producer$, consumer$);
+    let obs$ = merge(producer$, consumer$);
+    obs$.error$ = error$;
+    return obs$;
   };
 };
 

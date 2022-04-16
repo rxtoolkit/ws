@@ -15,9 +15,10 @@ Opening a two-way WebSocket is a very common software pattern.  The `conduit` op
 
 Optionally, it can be performed using a custom serializer or deserializer -- otherwise, it will assume the messages are encoded/decoded as JSON and transmitted as JSON strings.
 
+#### Basic usage
 ```javascript
 import { from } from 'rxjs';
-import { conduit } from '@bottlenose/rxws';
+import { conduit } from '@buccaneerai/rxjs-ws';
 
 const messagesToSend$ = from([
   {body: 'data'},
@@ -30,10 +31,27 @@ const socketResponse$ = messageToSend$.pipe(
 socketResponse$.subscribe(); // this will attempt to send the messages to the server
 ```
 
-**Custom serialization**:
+#### With error handling
 ```javascript
 import { from } from 'rxjs';
-import { conduit } from '@bottlenose/rxws';
+import { conduit } from '@buccaneerai/rxjs-ws';
+
+const messagesToSend$ = from([
+  {body: 'data'},
+  {body: 'more data'},
+]);
+const socketResponse$ = messageToSend$.pipe(
+  conduit({url: 'wss://mysite.com'})
+);
+
+socketResponse$.subscribe(); // this will attempt to send the messages to the server
+socketResponse$.error$.subscribe(); // returns WebSocket errors
+```
+
+#### Custom serialization
+```javascript
+import { from } from 'rxjs';
+import { conduit } from '@buccaneerai/rxjs-ws';
 
 const decodeMessage = base64Message => atob(base64Message);
 const encodeMessage = binaryString => btoa(binartString);

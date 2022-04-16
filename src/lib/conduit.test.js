@@ -4,7 +4,12 @@ import {marbles} from 'rxjs-marbles/mocha';
 import {of} from 'rxjs';
 import {mapTo} from 'rxjs/operators';
 
-import { CLIENT_CREATE, RECONNECT_DONE, NEW_MESSAGE } from '../internals/actions';
+import {
+  CONNECT_ERROR,
+  CLIENT_CREATE,
+  RECONNECT_DONE,
+  NEW_MESSAGE
+} from '../internals/actions';
 import conduit, {testExports} from './conduit';
 
 const {createMessageBuffer} = testExports;
@@ -117,6 +122,29 @@ describe('operators.conduit', () => {
     expect(params._send.firstCall.args[1]).to.equal(JSON.stringify);
     expect(params._consume.calledOnce).to.be.true;
     expect(params._consume.firstCall.args[0]).to.equal(JSON.parse);
+  }));
+
+  it('should expose errors via error$ property', marbles(m => {
+    const socket = {};
+    const events = [
+      [socket, {
+        type: NEW_MESSAGE,
+        data: {message: {data: JSON.stringify({text: 'aloha'})}},
+      }],
+      [socket, {type: CONNECT_ERROR, error: new Error('connection error')}],
+    ];
+    const ws$ = m.cold('-0-1|', events);
+    const messageIn$ = m.cold('--|');
+    const params = {
+      url: 'wss:fake.buccaneer.ai:883',
+      _ws: () => ws$,
+      _send: sinon.stub().returns(() => of()),
+      _consume: sinon.stub().returns(() => of()),
+    };
+    const actual$ = messageIn$.pipe(conduit(params)).error$;
+    const error = new Error('connection error');
+    const expected$ = m.cold('---0|', [error]);
+    m.expect(actual$).toBeObservable(expected$);
   }));
 
   // it('should broadcast messages to the socket', marbles(m => {

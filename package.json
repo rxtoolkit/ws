@@ -1,6 +1,6 @@
 {
   "name": "@buccaneerai/rxjs-ws",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "🔌 RxJS operators for working with WebSockets",
   "main": "dist/index.js",
   "repository": "https://github.com/buccaneerai/rxjs-ws.git",
