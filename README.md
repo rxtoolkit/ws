@@ -53,7 +53,7 @@ import { from } from 'rxjs';
 import { conduit } from '@rxtk/ws';
 
 const decodeMessage = base64Message => atob(base64Message);
-const encodeMessage = binaryString => btoa(binartString);
+const encodeMessage = binaryString => btoa(binaryString);
 
 const messagesToSend$ = from([
   'somebinarystring',
