@@ -2,6 +2,10 @@
 > 🔌 RxJS operators for working with WebSockets
 
 ```bash
+npm i @rxtk/ws
+```
+
+```bash
 yarn add @rxtk/ws
 ```
 
