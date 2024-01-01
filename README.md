@@ -8,9 +8,11 @@ yarn add @rxtk/ws
 ## API
 
 ### `conduit`
-Opening a two-way WebSocket is a very common software pattern.  The `conduit` operator makes it trivially easy to do this.  It pipes an Observable into a two-way websocket. Each item in the Observable will be published to the server. The output stream will be the messages sent from the server to the client.  
+Opening a two-way WebSocket is a very common software pattern.  The `conduit` operator makes it trivially easy to do this.  It pipes an Observable into a two-way websocket. Each item in the input Observable will be published to the server. The output Observable will be the messages sent from the server to the client.
 
 Optionally, it can be performed using a custom serializer or deserializer -- otherwise, it will assume the messages are encoded/decoded as JSON and transmitted as JSON strings.
+
+The conduit also supports error handling and many disconnection scenarios (see examples below).
 
 #### Basic usage
 ```javascript
